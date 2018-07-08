@@ -248,10 +248,11 @@ export default {
         amount: this.amount,
         fee: this.fee,
         rawTx})
+      const blob = new Blob([saveInfo], {
+        type: "text/plain;charset=utf-8"
+      })
       fileSaver.saveAs(
-        new Blob([saveInfo], {
-          type: "text/plain;charset=utf-8"
-        }),
+        blob,
         this.fromAddress + "_" + new Date().getTime() + ".tx"
       )
     },
