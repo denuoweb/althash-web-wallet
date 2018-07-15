@@ -11,7 +11,7 @@
           multiLine
           required
           ></v-text-field>
-        <a href="https://ethereum.github.io/browser-solidity/" target="_blank" style="float: right;">{{ $t('create_contract.compiler') }}</a>
+        <a href="https://remix.ethereum.org" target="_blank" style="float: right;">{{ $t('create_contract.compiler') }}</a>
         <v-text-field
           label="Gas Price (1e-8 HTML/gas)"
           v-model.trim="gasPrice"
