@@ -101,11 +101,11 @@ export default {
       }
     },
 
-    confirmSend() {
+   async confirmSend() {
       const wallet = webWallet.getWallet()
       this.sending = true
       try {
-        const txId = wallet.sendRawTx(this.rawTx)
+        const txId = await wallet.sendRawTx(this.rawTx)
         this.confirmSendDialog = false
         this.sending = false
         this.$root.success('Successful send. You can view at ' + server.currentNode().getTxExplorerUrl(txId))
