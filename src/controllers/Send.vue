@@ -237,7 +237,8 @@ export default {
           this.confirmSendDialog = false
           this.sending = false
           const txViewUrl = server.currentNode().getTxExplorerUrl(txId)
-          this.$root.success(`Successful send. You can view at <a href="${txViewUrl}" target="_blank">${txViewUrl}</a>`, true, 0)          this.$emit('send')
+          this.$root.success(`Successful send. You can view at <a href="${txViewUrl}" target="_blank">${txViewUrl}</a>`, true, 0)
+          this.$emit('send')
         } catch (e) {
           alert(e.message || e)
           this.$root.log.error('send_post_raw_tx_error', e.response || e.stack || e.toString() || e)
