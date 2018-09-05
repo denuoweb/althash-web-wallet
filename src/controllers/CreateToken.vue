@@ -1,19 +1,32 @@
 <template>
   <v-card>
     <v-card-title>
-      <span class="headline">{{ $t('create_contract.title') }}</span>
+      <span class="headline">{{ $t('create_token.title') }}</span>
     </v-card-title>
     <v-card-text>
       <v-form>
         <v-text-field
-          label="Byte Code"
-          v-model.trim="code"
-          multiLine
+          :label="$t('create_token.name')"
+          v-model.trim="name"
           required
-          ></v-text-field>
-        <a href="https://remix.ethereum.org" target="_blank" style="float: right;">{{ $t('create_contract.compiler') }}</a>
+        ></v-text-field>
         <v-text-field
-          label="Gas Price (1e-8 HTML/gas)"
+          :label="$t('create_token.symbol')"
+          v-model.trim="symbol"
+          required
+        ></v-text-field>
+        <v-text-field
+          :label="$t('create_token.decimal')"
+          v-model.trim="decimal"
+          required
+        ></v-text-field>
+        <v-text-field
+          :label="$t('create_token.total_supply')"
+          v-model.trim="totalSupply"
+          required
+        ></v-text-field>
+        <v-text-field
+          label="Gas Price (1e-8 HTMLCOIN/gas)"
           v-model.trim="gasPrice"
           required
         ></v-text-field>
@@ -37,7 +50,7 @@
       <v-card>
         <v-card-title>
           <span class="headline">
-            {{ $t('create_contract.confirm') }}
+            {{ $t('create_token.confirm') }}
           </span>
         </v-card-title>
         <v-card-text>
@@ -59,15 +72,16 @@
     </v-dialog>
   </v-card>
 </template>
-
 <script>
 import webWallet from 'libs/web-wallet'
 import server from 'libs/server'
-
 export default {
   data () {
     return {
-      code: '',
+      name: '',
+      symbol: '',
+      decimal: '8',
+      totalSupply: '',
       gasPrice: '40',
       gasLimit: '2500000',
       fee: '0.01',
@@ -80,10 +94,12 @@ export default {
   computed: {
     notValid: function() {
       //@todo valid the address
+      const decimalCheck = /^(0|[1-9][0-9]*)$/.test(this.decimal) && this.decimal < 256
+      const totalSupplyCheck = !isNaN(this.totalSupply)
       const gasPriceCheck = /^\d+\.?\d*$/.test(this.gasPrice) && this.gasPrice > 0
       const gasLimitCheck = /^\d+\.?\d*$/.test(this.gasLimit) && this.gasLimit > 0
       const feeCheck = /^\d+\.?\d*$/.test(this.fee) && this.fee > 0.0001
-      return !(gasPriceCheck && gasLimitCheck && feeCheck)
+      return !(decimalCheck && totalSupplyCheck && gasPriceCheck && gasLimitCheck && feeCheck)
     }
   },
   methods: {
@@ -91,17 +107,16 @@ export default {
       this.confirmSendDialog = true
       const wallet = webWallet.getWallet()
       try {
-        this.rawTx = await wallet.generateCreateContractTx(this.code, this.gasLimit, this.gasPrice, this.fee)
+        this.rawTx = await wallet.generateCreateTokenTx(this.name, this.symbol, this.decimal, this.totalSupply, this.gasLimit, this.gasPrice, this.fee)
         this.canSend = true
       } catch (e) {
         alert(e.message || e)
-        this.$root.log.error('create_contract_generate_error', e.stack || e.toString() || e)
+        this.$root.log.error('create_contract_token_error', e.stack || e.toString() || e)
         this.confirmSendDialog = false
         return false
       }
     },
-
-   async confirmSend() {
+    async confirmSend() {
       const wallet = webWallet.getWallet()
       this.sending = true
       try {

@@ -167,8 +167,8 @@ export default {
         const txId = await webWallet.getWallet().sendRawTx(this.rawTx)
         this.confirmSendDialog = false
         this.sending = false
-        this.$root.success('Successful send. You can view at ' + server.currentNode().getTxExplorerUrl(txId))
-        this.$emit('send')
+        const txViewUrl = server.currentNode().getTxExplorerUrl(txId)
+        this.$root.success(`Successful send. You can view at <a href="${txViewUrl}" target="_blank">${txViewUrl}</a>`, true, 0)        this.$emit('send')
       } catch (e) {
         alert(e.message || e)
         this.$root.log.error('send_to_contract_post_raw_tx_error', e.response || e.stack || e.toString() || e)
