@@ -10,10 +10,10 @@ switch (config.getNetwork()) {
     break
   case 'mainnet':
     domain = 'https://info.htmlcoin.com'
-    insightDomain = 'https://explorer.qtum.org'
+    insightDomain = 'https://mobileapi.htmlcoin.com'
     break
 }
-const apiPrefix = insightDomain + '/api'
+const apiPrefix = insightDomain + ''
 const _get = async url => {
   return (await axios.get(apiPrefix + url)).data
 }
