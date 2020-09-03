@@ -1,7 +1,7 @@
 {
   "name": "htmlcoin-wallet",
-  "version": "1.1.1",
-  "description": "Htmlcoin Web Wallet",
+  "version": "1.1.0",
+  "description": "A Vue.js project",
   "author": "HTMLCOIN <dev@htmlcoin.team>",
   "private": false,
   "scripts": {
@@ -33,7 +33,7 @@
     "babel-register": "^6.22.0",
     "bip32-utils": "^0.10.2",
     "bip39": "^2.5.0",
-    "bitcoinjs-lib": "https://github.com/HTMLCOIN/bitcoinjs-lib.git",
+    "bitcoinjs-lib": "^3.3.2",
     "chalk": "^2.3.2",
     "connect-history-api-fallback": "^1.5.0",
     "copy-webpack-plugin": "^4.5.1",
@@ -54,7 +54,7 @@
     "optimize-css-assets-webpack-plugin": "^2.0.0",
     "ora": "^1.4.0",
     "qtum-opcodes": "^1.0.0",
-    "htmlcoinjs-lib": "0.1.13",
+    "htmlcoinjs-lib": "0.1.5",
     "rimraf": "^2.6.0",
     "semver": "^5.5.0",
     "shelljs": "^0.7.6",
