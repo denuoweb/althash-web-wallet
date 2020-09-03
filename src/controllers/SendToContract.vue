@@ -146,7 +146,7 @@ export default {
         const encodedData = abi.encodeMethod(this.parsedAbi[this.method].info, this.inputParams).substr(2)
         this.confirmSendDialog = true
         try {
-          this.rawTx = await webWallet.getWallet().generateSendToContractTx(this.contractAddress, encodedData, this.gasLimit, this.gasPrice, this.fee, this.amount)
+          this.rawTx = await webWallet.getWallet().generateSendToContractTx(this.contractAddress, encodedData, this.gasLimit, this.gasPrice, this.fee)
         } catch (e) {
           this.$root.log.error('send_to_generate_tx_error', e.stack || e.toString() || e)
           alert(e.message || e)
