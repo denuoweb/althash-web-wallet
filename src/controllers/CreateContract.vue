@@ -68,6 +68,7 @@
 <script>
  import webWallet from 'libs/web-wallet'
  import server from 'libs/server'
+ 
   export default {
     data() {
       return {
@@ -127,5 +128,5 @@
       },
     },
   }
-
+  
 </script>
