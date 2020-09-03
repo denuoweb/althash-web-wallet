@@ -134,7 +134,8 @@ export default {
         this.parsedAbi = []
         for (let i = 0; i < abiJson.length; i++) {
           if (abiJson[i].type === 'constructor' || abiJson[i].type === 'event') continue
-          this.parsedAbi.push({text: abiJson[i]['name'], value: i, info: abiJson[i]})        }
+          this.parsedAbi.push({text: abiJson[i]['name'], value: i, info: abiJson[i]})
+        }
       } catch (e) {
         this.$root.log.error('send_to_contract_decode_abi_error', e.stack || e.toString() || e)
         return true
