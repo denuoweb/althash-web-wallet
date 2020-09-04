@@ -2,6 +2,14 @@
   <v-card>
     <v-card-title>
       <span class="headline">{{ $t('view.title') }}</span>
+      <v-tooltip bottom>
+        <v-btn icon slot="activator" @click="refreshWallet">
+          <v-icon color="blue accent-4">
+            refresh
+          </v-icon>
+        </v-btn>
+        <span>Refresh</span>
+      </v-tooltip>
     </v-card-title>
     <v-card-text>
       <v-layout v-for="(item, i) in infoLabel" :key="i">
@@ -97,6 +105,10 @@ export default {
     },
     onCopyError: function() {
       this.$root.error('Failed to copy!')
+    },
+    async refreshWallet(){
+      this.wallet.setInfo()
+      this.wallet.setHrc20()
     }
   }
 }
