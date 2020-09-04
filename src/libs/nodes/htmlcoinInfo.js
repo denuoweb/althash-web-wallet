@@ -6,11 +6,11 @@ let insightDomain = ''
 switch (config.getNetwork()) {
   case 'testnet':
     domain = 'https://info-testnet.htmlcoin.com'
-    insightDomain = 'http://testnet-api.htmlcoin.com/'
+    insightDomain = 'https://testnet-api.htmlcoin.com/'
     break
   case 'mainnet':
     domain = 'https://info.htmlcoin.com'
-    insightDomain = 'https://mobileapi.htmlcoin.com'
+    insightDomain = 'https://explorer.htmlcoin.com'
     break
 }
 const apiPrefix = insightDomain + ''
