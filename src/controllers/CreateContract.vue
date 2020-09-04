@@ -68,65 +68,58 @@
 <script>
  import webWallet from 'libs/web-wallet'
  import server from 'libs/server'
-
-  export default {
-    data() {
-      return {
-        code: '',
-        gasPrice: '40',
-        gasLimit: '2500000',
-        fee: '0.01',
-        confirmSendDialog: false,
-        rawTx: 'loading...',
-        canSend: false,
-        sending: false,
+export default {
+  data () {
+    return {
+      code: '',
+      gasPrice: '40',
+      gasLimit: '2500000',
+      fee: '0.01',
+      confirmSendDialog: false,
+      rawTx: 'loading...',
+      canSend: false,
+      sending: false
+    }
+  },
+  computed: {
+    notValid: function() {
+      //@todo valid the address
+      const gasPriceCheck = /^\d+\.?\d*$/.test(this.gasPrice) && this.gasPrice > 0
+      const gasLimitCheck = /^\d+\.?\d*$/.test(this.gasLimit) && this.gasLimit > 0
+      const feeCheck = /^\d+\.?\d*$/.test(this.fee) && this.fee > 0.0001
+      return !(gasPriceCheck && gasLimitCheck && feeCheck)
+    }
+  },
+  methods: {
+    async send() {
+      this.confirmSendDialog = true
+      const wallet = webWallet.getWallet()
+      try {
+        this.rawTx = await wallet.generateCreateContractTx(this.code, this.gasLimit, this.gasPrice, this.fee)
+        this.canSend = true
+      } catch (e) {
+        alert(e.message || e)
+        this.$root.log.error('create_contract_generate_error', e.stack || e.toString() || e)
+        this.confirmSendDialog = false
+        return false
       }
     },
-    computed: {
-      notValid: function () {
-        //@todo valid the address
-        const gasPriceCheck = /^\d+\.?\d*$/.test(this.gasPrice) && this.gasPrice > 0
-        const gasLimitCheck = /^\d+\.?\d*$/.test(this.gasLimit) && this.gasLimit > 0
-        const feeCheck = /^\d+\.?\d*$/.test(this.fee) && this.fee > 0.0001
-        return !(gasPriceCheck && gasLimitCheck && feeCheck)
-      },
-    },
-    methods: {
-      async send() {
-        this.confirmSendDialog = true
-        const wallet = webWallet.getWallet()
-        try {
-          this.rawTx = await wallet.generateCreateContractTx(this.code, this.gasLimit, this.gasPrice, this.fee)
-          this.canSend = true
-        } catch (e) {
-          alert(e.message || e)
-          this.$root.log.error('create_contract_generate_error', e.stack || e.toString() || e)
-          this.confirmSendDialog = false
-          return false
-        }
-      },
-      
-      async confirmSend() {
-        const wallet = webWallet.getWallet()
-        this.sending = true
-        try {
-          const res = await wallet.sendRawTx(this.rawTx)
-          this.confirmSendDialog = false
-          this.sending = false
-          if (res.txId) {
-            const txViewUrl = server.currentNode().getTxExplorerUrl(res.txId)
-            this.$root.success(`Successful send. You can view at <a href="${txViewUrl}" target="_blank">${txViewUrl}</a>`, true, 0)
-          } else {
-            this.$root.error(`Send Failed : ${res.message}`, true, 0)
-          }
-          this.$emit('send')
-        } catch (e) {
-          alert(e.message || e)
-          this.$root.log.error('create_contract_post_raw_tx_error', e.response || e.stack || e.toString() || e)
-          this.confirmSendDialog = false
-        }
-      },
-    },
+    async confirmSend() {
+      const wallet = webWallet.getWallet()
+      this.sending = true
+      try {
+        const txId = await wallet.sendRawTx(this.rawTx)
+        this.confirmSendDialog = false
+        this.sending = false
+	const txViewUrl = server.currentNode().getTxExplorerUrl(txId)
+        this.$root.success(`Successful sent! You can view it at <a href="${txViewUrl}" target="_blank">${txViewUrl}</a>`, true, 0)
+        this.$emit('send')
+      } catch (e) {
+        alert(e.message || e)
+        this.$root.log.error('create_contract_post_raw_tx_error', e.response || e.stack || e.toString() || e)
+        this.confirmSendDialog = false
+      }
+    }
   }
-  
+}
 </script>
