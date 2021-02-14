@@ -1,4 +1,4 @@
-# Htmlcoin Web Wallet
+# Althash Web Wallet
 
 'nvm use 10'
 'git clone'
@@ -19,7 +19,7 @@ Features:
     - Input words
 - Restore From Key File
     - Upload wallet
-- Restore From Ledger (HTMLCOIN ledger in testing)
+- Restore From Ledger (Althash ledger in testing)
     - Install App and connect Ledger
 - View Wallet Info
     - Address
